@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: talkdesk-cl-testing
+  name: talkdesk-cl-testing
+  namespace:
+
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: talkdesk-cl-testing
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
+      labels:
+        app: talkdesk-cl-testing
+    spec:
+      containers:
+      - image: gcr.io/call-center-data-331917/talkdesk_client_library_testing:latest
+        name: talkdesk-client-library-testing
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+            name: http-requests
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

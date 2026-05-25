@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: talkdesk-callbacks
+  name: talkdesk-callbacks
+  namespace: talkdesk
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: talkdesk-callbacks
+  template:
+    metadata:
+      annotations:
+        proxy.istio.io/config: '{"holdApplicationUntilProxyStarts": true}'
+      labels:
+        app: talkdesk-callbacks
+    spec:
+      containers:
+      - image: gcr.io/call-center-data-331917/talkdesk-callbacks:latest
+        name: callbacks
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
+            name: http-requests
+            protocol: TCP
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      serviceAccountName: bigquery-streamer
+      terminationGracePeriodSeconds: 30

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A379" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="0.0.2">
+    <entity name="Category" representedClassName="DACategory" syncable="YES" codeGenerationType="class">
+        <attribute name="colorRaw" attributeType="String" valueTransformerName="CategoryColorTranformer" defaultValueString="&quot;Category: Grey (Unassigned)&quot;" customClassName="CategoryColor"/>
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="ADC8A9FC-591E-445E-BC39-F8038412765D" usesScalarValueType="NO"/>
+        <attribute name="title" attributeType="String" defaultValueString=""/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Collection" representedClassName="DACollection" syncable="YES" codeGenerationType="class">
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="5169F6FF-CB75-473A-B6F1-F0DE71507872" usesScalarValueType="NO"/>
+        <attribute name="tasks" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[NSUUID]"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="updateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="collections" inverseEntity="Folder"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Folder" representedClassName="DAFolder" syncable="YES" codeGenerationType="class">
+        <attribute name="category" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="090BD47C-27D4-41D9-84B9-353D2E8171C9" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="children" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder"/>
+        <relationship name="collections" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="folder" inverseEntity="Collection"/>
+        <relationship name="parent" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="children" inverseEntity="Folder"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Habit" representedClassName="DAHabit" syncable="YES" codeGenerationType="class">
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="64797278-A919-4E6F-ACF0-B1FBAA84AF0E" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Idea" representedClassName="DAIdea" syncable="YES" codeGenerationType="class">
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="DBB85E1A-B542-444F-8CFE-8B1C2FE56FA0" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Tag" representedClassName="DATag" syncable="YES" codeGenerationType="class">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="category" attributeType="UUID" defaultValueString="5169F6FF-CB75-473A-B6F1-F0DE71507872" usesScalarValueType="NO"/>
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="0FD7711A-A6F9-4D56-B9F3-C5E5200632E5" usesScalarValueType="NO"/>
+        <attribute name="rawType" optional="YES" attributeType="String" valueTransformerName="TagTypeTransformer" customClassName="TagTypeObject"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="parent" inverseEntity="Tag"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tag" inverseName="children" inverseEntity="Tag"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Task" representedClassName="DATask" syncable="YES" codeGenerationType="class">
+        <attribute name="category" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="collection" attributeType="UUID" defaultValueString="5169F6FF-CB75-473A-B6F1-F0DE71507872" usesScalarValueType="NO"/>
+        <attribute name="createTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="deferDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="expectedDuration" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="UUID" defaultValueString="33BCA2CD-9BE3-40DE-99F5-FB09E7E6020A" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="rawDueDate" optional="YES" attributeType="Binary" valueTransformerName="DueDateTransformer"/>
+        <attribute name="rawPriority" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="rawRepeating" optional="YES" attributeType="Binary"/>
+        <attribute name="rawStatus" optional="YES" attributeType="String"/>
+        <attribute name="reminders" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Date]"/>
+        <attribute name="tags" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[UUID]"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="updateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="children" inverseEntity="Task"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+</model>

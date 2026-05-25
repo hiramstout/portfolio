@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D49" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="0.1.0">
+    <entity name="Category" representedClassName="DACategory" syncable="YES" codeGenerationType="class">
+        <attribute name="cdCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="cdID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="cdTitle" attributeType="String" defaultValueString=""/>
+        <attribute name="cdUpdateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rawColor" attributeType="String" valueTransformerName="CategoryColorTranformer" defaultValueString="&quot;Category: Grey (Unassigned)&quot;" customClassName="CategoryColor"/>
+        <relationship name="nsCollections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Collection" inverseName="category" inverseEntity="Collection"/>
+        <relationship name="nsFolders" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="category" inverseEntity="Folder"/>
+        <relationship name="nsItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="category" inverseEntity="Item"/>
+        <relationship name="nsTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="category" inverseEntity="Tag"/>
+        <relationship name="unassigned" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Collection" inverseName="unassignedForCategory" inverseEntity="Collection"/>
+    </entity>
+    <entity name="Collection" representedClassName="DACollection" syncable="YES" codeGenerationType="class">
+        <attribute name="cdCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="cdID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="cdTitle" optional="YES" attributeType="String"/>
+        <attribute name="cdUpdateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="nsCollections" inverseEntity="Category"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="nsCollections" inverseEntity="Folder"/>
+        <relationship name="nsItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="collection" inverseEntity="Item"/>
+        <relationship name="unassignedForCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="unassigned" inverseEntity="Category"/>
+        <relationship name="unassignedForFolder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="unassigned" inverseEntity="Folder"/>
+    </entity>
+    <entity name="Folder" representedClassName="DAFolder" syncable="YES" codeGenerationType="class">
+        <attribute name="cdCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="cdID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="cdTitle" optional="YES" attributeType="String"/>
+        <attribute name="cdUpdateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="nsFolders" inverseEntity="Category"/>
+        <relationship name="nsChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="parent" inverseEntity="Folder"/>
+        <relationship name="nsCollections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Collection" inverseName="folder" inverseEntity="Collection"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="nsChildren" inverseEntity="Folder"/>
+        <relationship name="unassigned" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="unassignedForFolder" inverseEntity="Collection"/>
+    </entity>
+    <entity name="Habit" representedClassName="DAHabit" parentEntity="Item" syncable="YES" codeGenerationType="class"/>
+    <entity name="Idea" representedClassName="DAIdea" parentEntity="Item" syncable="YES" codeGenerationType="class"/>
+    <entity name="Item" representedClassName="DAItem" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="cdCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="cdID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="cdTitle" optional="YES" attributeType="String"/>
+        <attribute name="cdUpdateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rawStatus" optional="YES" attributeType="String"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="nsItems" inverseEntity="Category"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="nsItems" inverseEntity="Collection"/>
+        <relationship name="nsTags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="items" inverseEntity="Tag"/>
+    </entity>
+    <entity name="Tag" representedClassName="DATag" syncable="YES" codeGenerationType="class">
+        <attribute name="cdActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="cdCreateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="cdID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="cdTitle" optional="YES" attributeType="String"/>
+        <attribute name="cdUpdateTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rawType" optional="YES" attributeType="String" valueTransformerName="TagTypeTransformer" customClassName="TagTypeObject"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="nsTags" inverseEntity="Category"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="nsTags" inverseEntity="Item"/>
+        <relationship name="nsChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="parent" inverseEntity="Tag"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tag" inverseName="nsChildren" inverseEntity="Tag"/>
+    </entity>
+    <entity name="Task" representedClassName="DATask" parentEntity="Item" syncable="YES" codeGenerationType="class">
+        <attribute name="cdDuration" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="cdNotes" optional="YES" attributeType="String"/>
+        <attribute name="cdReminders" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[Date]"/>
+        <attribute name="deferDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rawDueDate" optional="YES" attributeType="Binary" valueTransformerName="DueDateTransformer"/>
+        <attribute name="rawPriority" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="rawRepeating" optional="YES" attributeType="Binary"/>
+        <relationship name="nsChildren" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="parent" inverseEntity="Task"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="nsChildren" inverseEntity="Task"/>
+    </entity>
+</model>

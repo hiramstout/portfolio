@@ -1,0 +1,19 @@
+syntax="proto3";
+
+option go_package = "../pb";
+
+message missedCallQueuedRowAppend {
+  int64 event_timestamp = 1;
+  string interaction_id = 2;
+  int32 attempt_number = 3;
+  int32 available_agent = 4;
+  bool failure_status = 5;
+  int32 total_still_needing_callback = 6;
+}
+message userPunchDelivered {
+  int64 event_timestamp = 1;
+  int64 punch_timestamp = 2;
+  string user_email = 3;
+  string punch_type = 4;
+  int64 punch_id_v2 = 5;
+}
